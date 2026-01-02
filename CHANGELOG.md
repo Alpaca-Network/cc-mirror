@@ -1,0 +1,46 @@
+# Changelog
+
+All notable changes to this project will be documented in this file.
+
+## [0.3.0] - 2025-01-02
+
+### Added
+- Colored ASCII art splash screens for each provider
+  - Z.ai: Gold/amber gradient
+  - MiniMax: Coral/red/orange gradient (matching brand)
+  - OpenRouter: Teal/cyan gradient
+  - LiteLLM: Sky blue gradient
+- Async operations for live TUI progress updates
+- MIT License
+
+### Changed
+- Renamed "Local LLMs" provider to "LiteLLM" throughout
+- Footer layout: creator info on left, social links stacked on right
+- tweakcc option now shows CLI command (avoids TUI-in-TUI conflict)
+- Prepared package.json for npm publish (removed private flag, added metadata)
+
+### Fixed
+- Progress bar and step animations now update in real-time
+- MiniMax colors now match official brand (coral/red, not purple)
+
+## [0.2.0] - 2025-01-01
+
+### Added
+- Full-screen TUI wizard
+- Brand theme presets (zai, minimax, openrouter, local)
+- Prompt packs for enhanced system prompts
+- dev-browser skill auto-installation
+- Shell environment integration for Z.ai
+
+### Changed
+- Restructured to use ink for TUI
+- Modular provider templates
+
+## [0.1.0] - 2024-12-30
+
+### Added
+- Initial release
+- CLI for creating Claude Code variants
+- Support for Z.ai, MiniMax, OpenRouter, Local LLMs
+- tweakcc integration for themes
+- Variant isolation with separate config directories
