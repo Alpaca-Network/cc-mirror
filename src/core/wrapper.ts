@@ -166,7 +166,7 @@ export const writeWrapper = (
     `${C.gzAccent}     ╚═════╝ ╚═╝  ╚═╝   ╚═╝   ╚══════╝ ╚══╝╚══╝ ╚═╝  ╚═╝   ╚═╝   ${C.gzCyan}╚══════╝${C.reset}`,
     '',
     `${C.gzDim}    ━━━━━━━━━━━━━━━━${C.gzPrimary}◆${C.gzDim}━━━━━━━━━━━━━━━━${C.reset}`,
-    `${C.gzSecondary}      Your Portal to Claude${C.reset}`,
+    `${C.gzSecondary}       Your Gateway to AI${C.reset}`,
     '',
     'CCMGWZ',
     '        __cc_show_label="0"',

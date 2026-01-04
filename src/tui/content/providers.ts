@@ -79,7 +79,7 @@ export const PROVIDER_EDUCATION: Record<string, ProviderEducation> = {
 
   gatewayz: {
     headline: 'GatewayZ — Anthropic API Gateway',
-    tagline: 'Your portal to Claude',
+    tagline: 'Your Gateway to AI',
     features: [
       'Anthropic /messages API compatible',
       'Claude model access',
