@@ -72,6 +72,7 @@ const PROVIDERS: Record<string, ProviderTemplate> = {
     baseUrl: 'https://api.gatewayz.ai/v1',
     env: {
       API_TIMEOUT_MS: DEFAULT_TIMEOUT_MS,
+      ANTHROPIC_BASE_URL: 'https://api.gatewayz.ai/v1',
       CC_MIRROR_SPLASH: 1,
       CC_MIRROR_PROVIDER_LABEL: 'GatewayZ',
       CC_MIRROR_SPLASH_STYLE: 'gatewayz',
