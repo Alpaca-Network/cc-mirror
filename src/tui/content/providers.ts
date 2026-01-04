@@ -77,6 +77,26 @@ export const PROVIDER_EDUCATION: Record<string, ProviderEducation> = {
     setupNote: 'Subscribe to MiniMax Coding Plan, then get your API key from the payment page.',
   },
 
+  gatewayz: {
+    headline: 'GatewayZ — Anthropic API Gateway',
+    tagline: 'Your portal to Claude',
+    features: [
+      'Anthropic /messages API compatible',
+      'Claude model access',
+      'Portal-themed interface',
+      'Simple API key authentication',
+    ],
+    bestFor: 'Direct Anthropic API access via GatewayZ',
+    requiresMapping: false,
+    hasPromptPack: false,
+    setupLinks: {
+      subscribe: 'https://gatewayz.ai',
+      apiKey: 'https://gatewayz.ai',
+      docs: 'https://gatewayz.ai',
+    },
+    setupNote: 'Get your API key from GatewayZ to access Anthropic-compatible endpoints.',
+  },
+
   openrouter: {
     headline: 'OpenRouter — One API, Any Model',
     tagline: 'Many paths, one door',
@@ -126,7 +146,7 @@ export const getProviderEducation = (providerKey: string): ProviderEducation | n
  * Quick comparison points for provider selection
  */
 export const PROVIDER_COMPARISON = {
-  fullySupported: ['zai', 'minimax'],
+  fullySupported: ['zai', 'minimax', 'gatewayz'],
   requiresMapping: ['openrouter', 'ccrouter'],
   hasPromptPack: ['zai', 'minimax'],
   localFirst: ['ccrouter'],

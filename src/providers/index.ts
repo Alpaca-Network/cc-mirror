@@ -65,6 +65,19 @@ const PROVIDERS: Record<string, ProviderTemplate> = {
     },
     apiKeyLabel: 'MiniMax API key',
   },
+  gatewayz: {
+    key: 'gatewayz',
+    label: 'GatewayZ',
+    description: 'Anthropic-compatible API via GatewayZ',
+    baseUrl: 'https://api.gatewayz.ai/v1',
+    env: {
+      API_TIMEOUT_MS: DEFAULT_TIMEOUT_MS,
+      CC_MIRROR_SPLASH: 1,
+      CC_MIRROR_PROVIDER_LABEL: 'GatewayZ',
+      CC_MIRROR_SPLASH_STYLE: 'gatewayz',
+    },
+    apiKeyLabel: 'GatewayZ API key',
+  },
   openrouter: {
     key: 'openrouter',
     label: 'OpenRouter',
