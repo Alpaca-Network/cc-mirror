@@ -82,8 +82,11 @@ npx cc-mirror quick --provider openrouter --api-key "$OPENROUTER_API_KEY" \
   --model-opus "anthropic/claude-3-opus" \
   --model-haiku "anthropic/claude-3-haiku"
 
-# GatewayZ (Anthropic API)
-npx cc-mirror quick --provider gatewayz --api-key "$GATEWAYZ_API_KEY"
+# GatewayZ (OpenRouter gateway)
+npx cc-mirror quick --provider gatewayz --api-key "$GATEWAYZ_API_KEY" \
+  --model-sonnet "anthropic/claude-sonnet-4" \
+  --model-opus "anthropic/claude-opus-4" \
+  --model-haiku "anthropic/claude-haiku"
 
 # Claude Code Router (local LLMs)
 npx cc-mirror quick --provider ccrouter
@@ -95,7 +98,7 @@ npx cc-mirror quick --provider ccrouter
 | -------------- | -------------------------------------------- | ---------- | ----------------------------------------------------- |
 | **Z.ai**       | GLM-4.7 via GLM Coding Plan                  | API Key    | Auto (GLM-4.7 for Sonnet/Opus, GLM-4.5-Air for Haiku) |
 | **MiniMax**    | MiniMax-M2.1 via MiniMax Coding Plan         | API Key    | Auto (single model for all tiers)                     |
-| **GatewayZ**   | Anthropic-compatible API gateway             | API Key    | Auto (uses Anthropic models)                          |
+| **GatewayZ**   | OpenRouter-compatible gateway                | Auth Token | Required (you choose the models)                      |
 | **OpenRouter** | Access 100+ models through one API           | Auth Token | Required (you choose the models)                      |
 | **CCRouter**   | Route to local LLMs (Ollama, DeepSeek, etc.) | Optional   | Handled by CCRouter config                            |
 

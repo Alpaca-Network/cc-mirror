@@ -68,7 +68,7 @@ const PROVIDERS: Record<string, ProviderTemplate> = {
   gatewayz: {
     key: 'gatewayz',
     label: 'GatewayZ',
-    description: 'Anthropic-compatible API via GatewayZ',
+    description: 'OpenRouter-compatible gateway for multiple AI models',
     baseUrl: 'https://api.gatewayz.ai/v1',
     env: {
       API_TIMEOUT_MS: DEFAULT_TIMEOUT_MS,
@@ -79,6 +79,7 @@ const PROVIDERS: Record<string, ProviderTemplate> = {
     },
     apiKeyLabel: 'GatewayZ API key',
     authMode: 'authToken',
+    requiresModelMapping: true,
   },
   openrouter: {
     key: 'openrouter',

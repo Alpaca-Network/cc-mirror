@@ -78,23 +78,23 @@ export const PROVIDER_EDUCATION: Record<string, ProviderEducation> = {
   },
 
   gatewayz: {
-    headline: 'GatewayZ — Anthropic API Gateway',
+    headline: 'GatewayZ — Your Gateway to AI',
     tagline: 'Your Gateway to AI',
     features: [
+      'Access to 100+ models via OpenRouter',
       'Anthropic /messages API compatible',
-      'Claude model access',
       'Portal-themed interface',
-      'Simple API key authentication',
+      'Pay-per-use pricing',
     ],
-    bestFor: 'Direct Anthropic API access via GatewayZ',
-    requiresMapping: false,
+    bestFor: 'Accessing multiple AI models through a unified gateway',
+    requiresMapping: true,
     hasPromptPack: false,
     setupLinks: {
       subscribe: 'https://gatewayz.ai',
       apiKey: 'https://gatewayz.ai',
-      docs: 'https://gatewayz.ai',
+      docs: 'https://api.gatewayz.ai/docs',
     },
-    setupNote: 'Get your API key from GatewayZ to access Anthropic-compatible endpoints.',
+    setupNote: 'Get your API key from GatewayZ. You must set model aliases (e.g., anthropic/claude-sonnet-4).',
   },
 
   openrouter: {
@@ -146,8 +146,8 @@ export const getProviderEducation = (providerKey: string): ProviderEducation | n
  * Quick comparison points for provider selection
  */
 export const PROVIDER_COMPARISON = {
-  fullySupported: ['zai', 'minimax', 'gatewayz'],
-  requiresMapping: ['openrouter', 'ccrouter'],
+  fullySupported: ['zai', 'minimax'],
+  requiresMapping: ['gatewayz', 'openrouter', 'ccrouter'],
   hasPromptPack: ['zai', 'minimax'],
   localFirst: ['ccrouter'],
 };
