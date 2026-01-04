@@ -263,9 +263,9 @@ export const App: React.FC<AppProps> = ({
   const getDefaultModels = (key?: string | null): { opus: string; sonnet: string; haiku: string } => {
     if (key === 'gatewayz') {
       return {
-        opus: 'claude-opus-4-5-@20251101',
-        sonnet: 'claude-sonnet-4-@20250514',
-        haiku: 'claude-haiku-3-5-@20241022',
+        opus: 'claude-opus-4-5-20251101',
+        sonnet: 'claude-sonnet-4-20250514',
+        haiku: 'claude-haiku-3-5-20241022',
       };
     }
     return { opus: '', sonnet: '', haiku: '' };

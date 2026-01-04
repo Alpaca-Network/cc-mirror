@@ -63,9 +63,9 @@ function getPlaceholder(providerKey: string | undefined, model: 'opus' | 'sonnet
       haiku: 'anthropic/claude-3-haiku',
     },
     gatewayz: {
-      opus: 'claude-opus-4-5-@20251101',
-      sonnet: 'claude-sonnet-4-@20250514',
-      haiku: 'claude-haiku-3-5-@20241022',
+      opus: 'claude-opus-4-5-20251101',
+      sonnet: 'claude-sonnet-4-20250514',
+      haiku: 'claude-haiku-3-5-20241022',
     },
     ccrouter: {
       opus: 'deepseek,deepseek-reasoner',
