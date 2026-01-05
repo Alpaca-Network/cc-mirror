@@ -143,9 +143,9 @@ minimax                       # If you named it 'minimax'
 --provider <name>        zai | minimax | gatewayz | openrouter | ccrouter | custom
 --api-key <key>          Provider API key
 --base-url <url>         Custom API endpoint
---model-sonnet <name>    Map to sonnet model (for OpenRouter)
---model-opus <name>      Map to opus model (for OpenRouter)
---model-haiku <name>     Map to haiku model (for OpenRouter)
+--model-sonnet <name>    Map to sonnet model (for providers requiring model mapping)
+--model-opus <name>      Map to opus model (for providers requiring model mapping)
+--model-haiku <name>     Map to haiku model (for providers requiring model mapping)
 --brand <preset>         Theme: auto | none | zai | minimax | gatewayz | openrouter | ccrouter
 --root <path>            Variants root (default: ~/.cc-mirror)
 --bin-dir <path>         Wrapper dir (default: ~/.local/bin)
