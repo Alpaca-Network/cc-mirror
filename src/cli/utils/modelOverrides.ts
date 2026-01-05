@@ -31,7 +31,7 @@ const PROVIDER_MODEL_DEFAULTS: Record<string, { sonnet: string; opus: string; ha
 };
 
 /**
- * Ensure model mapping for providers that require it (e.g., OpenRouter, LiteLLM)
+ * Ensure model mapping for providers that require explicit model mapping
  * Prompts for missing models if not in --yes mode
  */
 export async function ensureModelMapping(
