@@ -211,6 +211,15 @@ export async function runTasksCommand({ opts }: TasksCommandOptions): Promise<vo
     }
 
     case 'clean': {
+      let olderThan: number | undefined;
+      if (opts['older-than'] !== undefined) {
+        olderThan = Number(opts['older-than']);
+        if (Number.isNaN(olderThan) || olderThan < 0) {
+          console.error('Error: --older-than must be a non-negative number (days).');
+          process.exitCode = 1;
+          return;
+        }
+      }
       await runTasksClean({
         rootDir,
         variant,
@@ -218,7 +227,7 @@ export async function runTasksCommand({ opts }: TasksCommandOptions): Promise<vo
         allVariants,
         allTeams,
         resolved: Boolean(opts.resolved),
-        olderThan: opts['older-than'] !== undefined ? Number(opts['older-than']) : undefined,
+        olderThan,
         dryRun: Boolean(opts['dry-run']),
         force: Boolean(opts.force),
         json,
