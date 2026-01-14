@@ -129,13 +129,13 @@ test('parsePromptPackMode returns minimal for minimal', () => {
   assert.equal(parsePromptPackMode('minimal'), 'minimal');
 });
 
-test('parsePromptPackMode returns maximal for maximal', () => {
-  assert.equal(parsePromptPackMode('maximal'), 'maximal');
+test('parsePromptPackMode returns undefined for deprecated maximal', () => {
+  // maximal is deprecated and no longer supported
+  assert.equal(parsePromptPackMode('maximal'), undefined);
 });
 
-test('parsePromptPackMode is case-insensitive', () => {
+test('parsePromptPackMode is case-insensitive for minimal', () => {
   assert.equal(parsePromptPackMode('MINIMAL'), 'minimal');
-  assert.equal(parsePromptPackMode('MAXIMAL'), 'maximal');
   assert.equal(parsePromptPackMode('Minimal'), 'minimal');
 });
 
@@ -195,10 +195,10 @@ test('printSummary prints basic info', () => {
       meta: createMeta({ name: 'test-variant' }),
     });
 
-    assert.ok(logs.some((line) => line.includes('Created: test-variant')));
+    assert.ok(logs.some((line) => line.includes('✓ Created: test-variant')));
     assert.ok(logs.some((line) => line.includes('Provider: zai')));
     assert.ok(logs.some((line) => line.includes('Config: /config')));
-    assert.ok(logs.some((line) => line.includes('Next steps:')));
+    assert.ok(logs.some((line) => line.includes('Run: test-variant')));
   } finally {
     console.log = originalLog;
   }
@@ -219,7 +219,8 @@ test('printSummary prints prompt pack when enabled', () => {
       }),
     });
 
-    assert.ok(logs.some((line) => line.includes('Prompt pack: on (minimal)')));
+    // MiniMax shows MCP routing info
+    assert.ok(logs.some((line) => line.includes('Prompt pack: on (MCP routing)')));
   } finally {
     console.log = originalLog;
   }
@@ -254,28 +255,8 @@ test('printSummary prints notes when provided', () => {
       notes: ['First note', 'Second note'],
     });
 
-    assert.ok(logs.some((line) => line.includes('Notes:')));
-    assert.ok(logs.some((line) => line.includes('- First note')));
-    assert.ok(logs.some((line) => line.includes('- Second note')));
-  } finally {
-    console.log = originalLog;
-  }
-});
-
-test('printSummary prints share URL when provided', () => {
-  const logs: string[] = [];
-  const originalLog = console.log;
-  console.log = (...args: unknown[]) => logs.push(args.join(' '));
-
-  try {
-    printSummary({
-      action: 'Created',
-      meta: createMeta(),
-      shareUrl: 'https://x.com/intent/tweet?text=test',
-    });
-
-    assert.ok(logs.some((line) => line.includes('Share:')));
-    assert.ok(logs.some((line) => line.includes('https://x.com/intent/tweet')));
+    assert.ok(logs.some((line) => line.includes('• First note')));
+    assert.ok(logs.some((line) => line.includes('• Second note')));
   } finally {
     console.log = originalLog;
   }

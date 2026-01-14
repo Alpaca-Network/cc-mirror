@@ -2,7 +2,7 @@ export const DEFAULT_TIMEOUT_MS = '3000000';
 
 export type ProviderEnv = Record<string, string | number>;
 
-export type ProviderAuthMode = 'apiKey' | 'authToken';
+export type ProviderAuthMode = 'apiKey' | 'authToken' | 'none';
 
 export interface ProviderTemplate {
   key: string;
@@ -16,6 +16,10 @@ export interface ProviderTemplate {
   credentialOptional?: boolean;
   /** Mark as experimental/coming soon - hidden from main provider list */
   experimental?: boolean;
+  /** Auto-enable team mode patch for this provider */
+  enablesTeamMode?: boolean;
+  /** Skip prompt pack overlays (pure Claude experience) */
+  noPromptPack?: boolean;
 }
 
 export interface ModelOverrides {
@@ -30,10 +34,27 @@ export interface ModelOverrides {
 const CCROUTER_AUTH_FALLBACK = 'ccrouter-proxy';
 
 const PROVIDERS: Record<string, ProviderTemplate> = {
+  mirror: {
+    key: 'mirror',
+    label: 'Mirror Claude',
+    description: 'Pure Claude with team mode — the fastest path to multi-agent',
+    baseUrl: '', // Empty = use Claude Code defaults (no ANTHROPIC_BASE_URL override)
+    env: {
+      // Only cosmetic settings - no auth or model overrides
+      CC_MIRROR_SPLASH: 1,
+      CC_MIRROR_PROVIDER_LABEL: 'Mirror Claude',
+      CC_MIRROR_SPLASH_STYLE: 'mirror',
+    },
+    apiKeyLabel: '', // Empty = skip API key prompt
+    authMode: 'none', // No auth handling - user authenticates via normal Claude flow
+    credentialOptional: true, // No credentials required at create time
+    enablesTeamMode: true, // Auto-enable team mode patch
+    noPromptPack: true, // Skip prompt pack (pure Claude experience)
+  },
   zai: {
     key: 'zai',
     label: 'Zai Cloud',
-    description: 'GLM Coding Plan via Anthropic-compatible endpoint',
+    description: 'GLM-4.7 via Z.ai Coding Plan',
     baseUrl: 'https://api.z.ai/api/anthropic',
     env: {
       API_TIMEOUT_MS: DEFAULT_TIMEOUT_MS,
@@ -49,7 +70,7 @@ const PROVIDERS: Record<string, ProviderTemplate> = {
   minimax: {
     key: 'minimax',
     label: 'MiniMax Cloud',
-    description: 'MiniMax-M2.1 via Anthropic-compatible endpoint',
+    description: 'MiniMax-M2.1 via MiniMax Cloud',
     baseUrl: 'https://api.minimax.io/anthropic',
     env: {
       API_TIMEOUT_MS: DEFAULT_TIMEOUT_MS,
@@ -84,7 +105,7 @@ const PROVIDERS: Record<string, ProviderTemplate> = {
   openrouter: {
     key: 'openrouter',
     label: 'OpenRouter',
-    description: 'OpenRouter gateway for Anthropic-compatible requests',
+    description: '100+ models via OpenRouter gateway',
     baseUrl: 'https://openrouter.ai/api',
     env: {
       API_TIMEOUT_MS: DEFAULT_TIMEOUT_MS,
@@ -99,7 +120,7 @@ const PROVIDERS: Record<string, ProviderTemplate> = {
   ccrouter: {
     key: 'ccrouter',
     label: 'Claude Code Router',
-    description: 'Route requests to any model via Claude Code Router',
+    description: 'Local LLMs via Claude Code Router',
     baseUrl: 'http://127.0.0.1:3456',
     env: {
       API_TIMEOUT_MS: DEFAULT_TIMEOUT_MS,
@@ -175,6 +196,23 @@ export const buildEnv = ({ providerKey, baseUrl, apiKey, extraEnv, modelOverride
 
   const env: ProviderEnv = { ...provider.env };
   const authMode = provider.authMode ?? 'apiKey';
+
+  // For 'none' authMode, only apply cosmetic env vars - no auth or base URL
+  if (authMode === 'none') {
+    // Still allow extraEnv for user customization
+    if (Array.isArray(extraEnv)) {
+      for (const entry of extraEnv) {
+        const idx = entry.indexOf('=');
+        if (idx === -1) continue;
+        const key = entry.slice(0, idx).trim();
+        const value = entry.slice(idx + 1).trim();
+        if (!key) continue;
+        env[key] = value;
+      }
+    }
+    return env;
+  }
+
   if (!Object.hasOwn(env, 'DISABLE_AUTOUPDATER')) {
     env.DISABLE_AUTOUPDATER = '1';
   }

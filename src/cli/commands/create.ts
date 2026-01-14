@@ -8,13 +8,11 @@ import * as core from '../../core/index.js';
 import type { ParsedArgs } from '../args.js';
 import { prompt } from '../prompt.js';
 import {
-  buildShareUrl,
   printSummary,
   getModelOverridesFromArgs,
   ensureModelMapping,
   formatModelNote,
   requirePrompt,
-  parsePromptPackMode,
   buildExtraEnv,
 } from '../utils/index.js';
 
@@ -76,7 +74,9 @@ async function prepareCreateParams(opts: ParsedArgs): Promise<CreateParams> {
   const npmPackage = (opts['npm-package'] as string) || core.DEFAULT_NPM_PACKAGE;
   const extraEnv = buildExtraEnv(opts);
   const requiresCredential = !provider.credentialOptional;
-  const shouldPromptApiKey = !opts.yes && !hasApiKeyFlag && (providerKey === 'zai' ? !hasZaiEnv : !apiKey);
+  // Don't prompt for API key if credential is optional (mirror, ccrouter)
+  const shouldPromptApiKey =
+    !provider.credentialOptional && !opts.yes && !hasApiKeyFlag && (providerKey === 'zai' ? !hasZaiEnv : !apiKey);
 
   return {
     provider,
@@ -101,7 +101,6 @@ async function prepareCreateParams(opts: ParsedArgs): Promise<CreateParams> {
 async function handleQuickMode(opts: ParsedArgs, params: CreateParams): Promise<void> {
   const { provider } = params;
   const promptPack = opts['no-prompt-pack'] ? false : undefined;
-  const promptPackMode = parsePromptPackMode(opts['prompt-pack-mode'] as string | undefined);
   const skillInstall = opts['no-skill-install'] ? false : undefined;
   const skillUpdate = Boolean(opts['skill-update']);
   let shellEnv = opts['no-shell-env'] ? false : opts['shell-env'] ? true : undefined;
@@ -131,6 +130,12 @@ async function handleQuickMode(opts: ParsedArgs, params: CreateParams): Promise<
     }
   }
 
+  // Team mode enabled by default for quick setup (use --disable-team-mode to opt out)
+  const enableTeamMode = opts['disable-team-mode'] ? false : true;
+  if (enableTeamMode) {
+    console.log('Team mode will be enabled (orchestrator skill installed)');
+  }
+
   const result = core.createVariant({
     name: params.name,
     providerKey: params.providerKey,
@@ -143,14 +148,14 @@ async function handleQuickMode(opts: ParsedArgs, params: CreateParams): Promise<
     npmPackage: params.npmPackage,
     noTweak: Boolean(opts.noTweak),
     promptPack,
-    promptPackMode,
     skillInstall,
     shellEnv,
     skillUpdate,
     modelOverrides: resolvedModelOverrides,
+    enableTeamMode,
+    tweakccStdio: 'pipe',
   });
 
-  const shareUrl = buildShareUrl(provider.label || params.providerKey, params.name, result.meta.promptPackMode);
   const modelNote = formatModelNote(resolvedModelOverrides);
   const notes = [...(result.notes || []), ...(modelNote ? [modelNote] : [])];
   printSummary({
@@ -158,7 +163,6 @@ async function handleQuickMode(opts: ParsedArgs, params: CreateParams): Promise<
     meta: result.meta,
     wrapperPath: result.wrapperPath,
     notes: notes.length > 0 ? notes : undefined,
-    shareUrl,
   });
 }
 
@@ -168,7 +172,6 @@ async function handleQuickMode(opts: ParsedArgs, params: CreateParams): Promise<
 async function handleInteractiveMode(opts: ParsedArgs, params: CreateParams): Promise<void> {
   const { provider } = params;
   const promptPack = opts['no-prompt-pack'] ? false : undefined;
-  const promptPackMode = parsePromptPackMode(opts['prompt-pack-mode'] as string | undefined);
   const skillInstall = opts['no-skill-install'] ? false : undefined;
   const skillUpdate = Boolean(opts['skill-update']);
   let shellEnv = opts['no-shell-env'] ? false : opts['shell-env'] ? true : undefined;
@@ -212,6 +215,15 @@ async function handleInteractiveMode(opts: ParsedArgs, params: CreateParams): Pr
     }
   }
 
+  // Team mode: enabled by default, can opt-out with --disable-team-mode or answer no to prompt
+  let enableTeamMode = true;
+  if (opts['disable-team-mode']) {
+    enableTeamMode = false;
+  } else if (!opts['enable-team-mode']) {
+    const answer = await prompt('Enable team mode (multi-agent collaboration)? (yes/no)', 'yes');
+    enableTeamMode = answer.trim().toLowerCase().startsWith('y');
+  }
+
   const result = core.createVariant({
     name: nextName,
     providerKey: params.providerKey,
@@ -224,14 +236,14 @@ async function handleInteractiveMode(opts: ParsedArgs, params: CreateParams): Pr
     npmPackage: nextNpmPackage,
     noTweak: Boolean(opts.noTweak),
     promptPack,
-    promptPackMode,
     skillInstall,
     shellEnv,
     skillUpdate,
     modelOverrides: resolvedModelOverrides,
+    enableTeamMode,
+    tweakccStdio: 'pipe',
   });
 
-  const shareUrl = buildShareUrl(provider.label || params.providerKey, result.meta.name, result.meta.promptPackMode);
   const modelNote = formatModelNote(resolvedModelOverrides);
   const notes = [...(result.notes || []), ...(modelNote ? [modelNote] : [])];
   printSummary({
@@ -239,7 +251,6 @@ async function handleInteractiveMode(opts: ParsedArgs, params: CreateParams): Pr
     meta: result.meta,
     wrapperPath: result.wrapperPath,
     notes: notes.length > 0 ? notes : undefined,
-    shareUrl,
   });
 }
 
@@ -247,9 +258,7 @@ async function handleInteractiveMode(opts: ParsedArgs, params: CreateParams): Pr
  * Handle non-interactive mode creation (--yes flag)
  */
 async function handleNonInteractiveMode(opts: ParsedArgs, params: CreateParams): Promise<void> {
-  const { provider } = params;
   const promptPack = opts['no-prompt-pack'] ? false : undefined;
-  const promptPackMode = parsePromptPackMode(opts['prompt-pack-mode'] as string | undefined);
   const skillInstall = opts['no-skill-install'] ? false : undefined;
   const skillUpdate = Boolean(opts['skill-update']);
   const shellEnv = opts['no-shell-env'] ? false : opts['shell-env'] ? true : undefined;
@@ -260,6 +269,9 @@ async function handleNonInteractiveMode(opts: ParsedArgs, params: CreateParams):
   }
 
   const resolvedModelOverrides = await ensureModelMapping(params.providerKey, opts, { ...modelOverrides });
+
+  // Team mode enabled by default (use --disable-team-mode to opt out)
+  const enableTeamMode = opts['disable-team-mode'] ? false : true;
 
   const result = core.createVariant({
     name: params.name,
@@ -273,14 +285,14 @@ async function handleNonInteractiveMode(opts: ParsedArgs, params: CreateParams):
     npmPackage: params.npmPackage,
     noTweak: Boolean(opts.noTweak),
     promptPack,
-    promptPackMode,
     skillInstall,
     shellEnv,
     skillUpdate,
     modelOverrides: resolvedModelOverrides,
+    enableTeamMode,
+    tweakccStdio: 'pipe',
   });
 
-  const shareUrl = buildShareUrl(provider.label || params.providerKey, result.meta.name, result.meta.promptPackMode);
   const modelNote = formatModelNote(resolvedModelOverrides);
   const notes = [...(result.notes || []), ...(modelNote ? [modelNote] : [])];
   printSummary({
@@ -288,7 +300,6 @@ async function handleNonInteractiveMode(opts: ParsedArgs, params: CreateParams):
     meta: result.meta,
     wrapperPath: result.wrapperPath,
     notes: notes.length > 0 ? notes : undefined,
-    shareUrl,
   });
 }
 

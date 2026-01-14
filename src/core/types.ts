@@ -12,6 +12,7 @@ export interface VariantMeta {
   tweakDir: string;
   brand?: string;
   promptPack?: boolean;
+  /** @deprecated No longer used - promptPackMode has been deprecated */
   promptPackMode?: 'minimal' | 'maximal';
   skillInstall?: boolean;
   shellEnv?: boolean;
@@ -20,6 +21,8 @@ export interface VariantMeta {
   npmDir?: string;
   npmPackage?: string;
   npmVersion?: string;
+  /** Whether team mode is enabled (cli.js patched) */
+  teamModeEnabled?: boolean;
 }
 
 export interface VariantEntry {
@@ -50,11 +53,12 @@ export interface CreateVariantParams {
   brand?: string;
   noTweak?: boolean;
   promptPack?: boolean;
-  promptPackMode?: 'minimal' | 'maximal';
   skillInstall?: boolean;
   shellEnv?: boolean;
   skillUpdate?: boolean;
   tweakccStdio?: 'pipe' | 'inherit';
+  /** Enable team mode by patching cli.js */
+  enableTeamMode?: boolean;
   /** Callback for progress updates during installation */
   onProgress?: ProgressCallback;
 }
@@ -67,7 +71,6 @@ export interface UpdateVariantOptions {
   /** Skip npm package reinstall - for settings-only updates (models, env) */
   settingsOnly?: boolean;
   promptPack?: boolean;
-  promptPackMode?: 'minimal' | 'maximal';
   skillInstall?: boolean;
   shellEnv?: boolean;
   skillUpdate?: boolean;
@@ -80,6 +83,10 @@ export interface UpdateVariantOptions {
     defaultModel?: string;
     subagentModel?: string;
   };
+  /** Enable team mode by patching cli.js */
+  enableTeamMode?: boolean;
+  /** Disable team mode by reversing cli.js patch */
+  disableTeamMode?: boolean;
   /** Callback for progress updates during update */
   onProgress?: ProgressCallback;
 }

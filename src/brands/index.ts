@@ -4,6 +4,7 @@ import { buildMinimaxTweakccConfig } from './minimax.js';
 import { buildGatewayZTweakccConfig } from './gatewayz.js';
 import { buildOpenRouterTweakccConfig } from './openrouter.js';
 import { buildCCRouterTweakccConfig } from './ccrouter.js';
+import { buildMirrorTweakccConfig } from './mirror.js';
 
 export interface BrandPreset {
   key: string;
@@ -42,6 +43,12 @@ const BRAND_PRESETS: Record<string, BrandPreset> = {
     label: 'CCRouter Sky',
     description: 'Airy sky-blue accents for Claude Code Router.',
     buildTweakccConfig: buildCCRouterTweakccConfig,
+  },
+  mirror: {
+    key: 'mirror',
+    label: 'Mirror Claude',
+    description: 'Reflective silver/chrome theme for pure Claude Code experience.',
+    buildTweakccConfig: buildMirrorTweakccConfig,
   },
 };
 

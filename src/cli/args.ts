@@ -13,6 +13,8 @@ export interface ParsedArgs {
   ['skill-update']?: boolean;
   ['shell-env']?: boolean;
   ['no-shell-env']?: boolean;
+  ['enable-team-mode']?: boolean;
+  ['disable-team-mode']?: boolean;
   [key: string]: string | boolean | string[] | undefined;
 }
 
@@ -54,9 +56,19 @@ export const parseArgs = (argv: string[]): ParsedArgs => {
       if (value) opts.env.push(value);
       continue;
     }
-    const [key, inlineValue] = arg.startsWith('--') ? arg.slice(2).split('=') : [null, null];
+    const [key, inlineValue] = arg.startsWith('--') ? arg.slice(2).split('=') : [undefined, undefined];
     if (!key) continue;
-    const value = inlineValue ?? args.shift();
+    // If there's an inline value (--key=value), use it
+    // Otherwise, peek at next arg - only consume if it doesn't start with -
+    let value: string | undefined;
+    if (inlineValue !== undefined) {
+      value = inlineValue;
+    } else {
+      const next = args[0];
+      if (next && !next.startsWith('-')) {
+        value = args.shift();
+      }
+    }
     if (value !== undefined) {
       opts[key] = value;
     } else {

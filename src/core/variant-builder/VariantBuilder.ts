@@ -6,7 +6,7 @@
  */
 
 import path from 'node:path';
-import { getProvider } from '../../providers/index.js';
+import { getProvider, type ProviderTemplate } from '../../providers/index.js';
 import { DEFAULT_BIN_DIR, DEFAULT_NPM_PACKAGE, DEFAULT_NPM_VERSION, DEFAULT_ROOT } from '../constants.js';
 import { expandTilde } from '../paths.js';
 import type { CreateVariantParams, CreateVariantResult } from '../types.js';
@@ -15,6 +15,7 @@ import type { BuildContext, BuildPaths, BuildPreferences, BuildState, BuildStep,
 // Import steps (will be created incrementally)
 import { PrepareDirectoriesStep } from './steps/PrepareDirectoriesStep.js';
 import { InstallNpmStep } from './steps/InstallNpmStep.js';
+import { TeamModeStep } from './steps/TeamModeStep.js';
 import { WriteConfigStep } from './steps/WriteConfigStep.js';
 import { BrandThemeStep } from './steps/BrandThemeStep.js';
 import { TweakccStep } from './steps/TweakccStep.js';
@@ -28,10 +29,11 @@ const normalizeNpmPackage = (value?: string) => (value && value.trim().length > 
 
 const normalizeNpmVersion = () => DEFAULT_NPM_VERSION;
 
-const shouldEnablePromptPack = (providerKey: string) => providerKey === 'zai' || providerKey === 'minimax';
-
-const defaultPromptPackMode = (providerKey: string): 'minimal' | 'maximal' =>
-  providerKey === 'zai' || providerKey === 'minimax' ? 'maximal' : 'minimal';
+const shouldEnablePromptPack = (providerKey: string, provider?: ProviderTemplate) => {
+  // Providers with noPromptPack: true skip prompt pack overlays
+  if (provider?.noPromptPack) return false;
+  return providerKey === 'zai' || providerKey === 'minimax';
+};
 
 const shouldInstallSkills = (providerKey: string) => providerKey === 'zai' || providerKey === 'minimax';
 
@@ -52,7 +54,8 @@ export class VariantBuilder {
       new PrepareDirectoriesStep(),
       new InstallNpmStep(),
       new WriteConfigStep(),
-      new BrandThemeStep(),
+      new BrandThemeStep(), // Creates tweakcc/config.json
+      new TeamModeStep(), // Patches cli.js and configures team toolset (needs config.json)
       new TweakccStep(),
       new WrapperStep(),
       new ShellEnvStep(),
@@ -92,8 +95,7 @@ export class VariantBuilder {
 
     const resolvedNpmPackage = normalizeNpmPackage(params.npmPackage);
     const resolvedNpmVersion = normalizeNpmVersion();
-    const promptPackPreference = params.promptPack ?? shouldEnablePromptPack(params.providerKey);
-    const promptPackModePreference = params.promptPackMode ?? defaultPromptPackMode(params.providerKey);
+    const promptPackPreference = params.promptPack ?? shouldEnablePromptPack(params.providerKey, provider);
     const promptPackEnabled = !params.noTweak && promptPackPreference;
     const skillInstallEnabled = params.skillInstall ?? shouldInstallSkills(params.providerKey);
     const shellEnvEnabled = params.shellEnv ?? shouldEnableShellEnv(params.providerKey);
@@ -104,7 +106,6 @@ export class VariantBuilder {
       resolvedNpmPackage,
       resolvedNpmVersion,
       promptPackPreference,
-      promptPackModePreference,
       promptPackEnabled,
       skillInstallEnabled,
       shellEnvEnabled,

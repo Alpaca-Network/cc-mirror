@@ -66,6 +66,11 @@ export const writeWrapper = (
     ccrSecondary: '\x1b[38;5;45m', // Bright cyan
     ccrAccent: '\x1b[38;5;33m', // Deep blue
     ccrDim: '\x1b[38;5;31m', // Muted blue
+    // Mirror: Silver/Chrome with electric blue
+    mirPrimary: '\x1b[38;5;252m', // Silver/light gray
+    mirSecondary: '\x1b[38;5;250m', // Platinum
+    mirAccent: '\x1b[38;5;45m', // Electric cyan
+    mirDim: '\x1b[38;5;243m', // Muted silver
     // GatewayZ: Purple/Violet gradient
     gzPrimary: '\x1b[38;5;135m', // Violet
     gzSecondary: '\x1b[38;5;141m', // Light violet
@@ -155,6 +160,22 @@ export const writeWrapper = (
     'CCMCCR',
     '        __cc_show_label="0"',
     '        ;;',
+    '      mirror)',
+    "        cat <<'CCMMIR'",
+    '',
+    `${C.mirPrimary}    ███╗   ███╗██╗██████╗ ██████╗  ██████╗ ██████╗${C.reset}`,
+    `${C.mirPrimary}    ████╗ ████║██║██╔══██╗██╔══██╗██╔═══██╗██╔══██╗${C.reset}`,
+    `${C.mirSecondary}    ██╔████╔██║██║██████╔╝██████╔╝██║   ██║██████╔╝${C.reset}`,
+    `${C.mirSecondary}    ██║╚██╔╝██║██║██╔══██╗██╔══██╗██║   ██║██╔══██╗${C.reset}`,
+    `${C.mirAccent}    ██║ ╚═╝ ██║██║██║  ██║██║  ██║╚██████╔╝██║  ██║${C.reset}`,
+    `${C.mirAccent}    ╚═╝     ╚═╝╚═╝╚═╝  ╚═╝╚═╝  ╚═╝ ╚═════╝ ╚═╝  ╚═╝${C.reset}`,
+    '',
+    `${C.mirDim}    ━━━━━━━━━━━━${C.mirAccent}◇${C.mirDim}━━━━━━━━━━━━${C.reset}`,
+    `${C.mirSecondary}      Claude ${C.mirDim}━${C.mirSecondary} Pure Reflection${C.reset}`,
+    '',
+    'CCMMIR',
+    '        __cc_show_label="0"',
+    '        ;;',
     '      gatewayz)',
     "        cat <<'CCMGWZ'",
     '',
@@ -200,6 +221,24 @@ export const writeWrapper = (
     ...envLoader,
     'if [[ "${CC_MIRROR_UNSET_AUTH_TOKEN:-0}" != "0" ]]; then',
     '  unset ANTHROPIC_AUTH_TOKEN',
+    'fi',
+    '# Dynamic team name: purely directory-based, with optional TEAM modifier',
+    '# Check for CLAUDE_CODE_TEAM_MODE (not TEAM_NAME) to avoid Claude Code overwriting',
+    'if [[ -n "${CLAUDE_CODE_TEAM_MODE:-}" ]]; then',
+    '  __cc_git_root=$(git rev-parse --show-toplevel 2>/dev/null || pwd)',
+    '  __cc_folder_name=$(basename "$__cc_git_root")',
+    '  if [[ -n "${TEAM:-}" ]]; then',
+    '    # Folder name + TEAM modifier',
+    '    export CLAUDE_CODE_TEAM_NAME="${__cc_folder_name}-${TEAM}"',
+    '  else',
+    '    # Just folder name (pure directory-based)',
+    '    export CLAUDE_CODE_TEAM_NAME="${__cc_folder_name}"',
+    '  fi',
+    'elif [[ -n "${TEAM:-}" ]]; then',
+    '  # TEAM env var set without team mode in settings - use folder + TEAM',
+    '  __cc_git_root=$(git rev-parse --show-toplevel 2>/dev/null || pwd)',
+    '  __cc_folder_name=$(basename "$__cc_git_root")',
+    '  export CLAUDE_CODE_TEAM_NAME="${__cc_folder_name}-${TEAM}"',
     'fi',
     ...splash,
     execLine,

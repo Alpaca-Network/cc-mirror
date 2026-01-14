@@ -10,64 +10,136 @@
   <a href="https://twitter.com/nummanali"><img src="https://img.shields.io/twitter/follow/nummanali?style=social" alt="Twitter Follow"></a>
 </p>
 
-<p align="center">
-  <strong>Create multiple isolated Claude Code variants with custom providers.</strong>
-</p>
+<h2 align="center">Claude Code, Unshackled</h2>
 
 <p align="center">
-  Run Claude Code with Z.ai, MiniMax, GatewayZ, OpenRouter, Claude Code Router, or any Anthropic-compatible API —<br>
-  each with its own config, themes, and session storage.
+  Pre-configured Claude Code variants with multi-agent orchestration,<br>
+  custom providers, and battle-tested enhancements.<br><br>
+  <strong>One command. Instant power-up.</strong>
 </p>
 
 ---
+
+## The Unlock
+
+Claude Code has a hidden multi-agent capability. CC-MIRROR enables it.
+
+```
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                                                                             │
+│   BEFORE                              AFTER                                 │
+│   ══════                              ═════                                 │
+│                                                                             │
+│   ┌─────────────────┐                 ┌─────────────────────────────────┐   │
+│   │   Claude Code   │                 │   YOUR Claude Code              │   │
+│   │                 │     CC-MIRROR   │                                 │   │
+│   │  • Single       │    ─────────►   │  ✓ Multi-Agent Orchestration    │   │
+│   │    config       │                 │  ✓ Task-based Coordination      │   │
+│   │  • No team      │                 │  ✓ Background Agent Spawning    │   │
+│   │    mode         │                 │  ✓ Battle-tested Skill          │   │
+│   │                 │                 │  ✓ Isolated Config              │   │
+│   └─────────────────┘                 └─────────────────────────────────┘   │
+│                                                                             │
+└─────────────────────────────────────────────────────────────────────────────┘
+```
+
+**What gets unlocked:**
+
+| Tool         | Purpose                                                  |
+| ------------ | -------------------------------------------------------- |
+| `TaskCreate` | Create tasks with subject, description, and dependencies |
+| `TaskGet`    | Retrieve full task details by ID                         |
+| `TaskUpdate` | Update status, add comments, set blockers                |
+| `TaskList`   | List all tasks with summary info                         |
+
+Plus a **battle-tested orchestrator skill** — refined through millions of tokens of iteration — that teaches Claude how to effectively coordinate multiple agents working in parallel.
+
+---
+
+## Quick Start
+
+```bash
+# Fastest path to multi-agent Claude Code
+npx cc-mirror quick --provider mirror --name mclaude
+
+# Run it
+mclaude
+```
+
+That's it. You now have Claude Code with team mode enabled.
 
 <p align="center">
   <img src="./assets/cc-mirror-home.png" alt="CC-MIRROR Home Screen" width="600">
 </p>
 
-## Why CC-MIRROR?
-
-Claude Code is powerful, but locked to Anthropic's API. **CC-MIRROR** lets you:
-
-- **Use any provider** — Z.ai's GLM models, MiniMax-M2.1, OpenRouter's 100+ models, or route to local LLMs via Claude Code Router
-- **Keep variants isolated** — Each variant has its own config, sessions, and themes
-- **Switch instantly** — Run `zai` for Z.ai, `minimax` for MiniMax, `openrouter` for OpenRouter
-
-## Features
-
-- **Multiple Providers** — Z.ai, MiniMax, GatewayZ, OpenRouter, Claude Code Router, or custom endpoints
-- **Complete Isolation** — Each variant has its own config, sessions, and themes
-- **Brand Themes** — Custom color schemes per provider via [tweakcc](https://github.com/Piebald-AI/tweakcc)
-- **Prompt Packs** — Enhanced system prompts for Z.ai and MiniMax
-- **One-Command Updates** — Update all variants when Claude Code releases
-- **Interactive TUI** — Full-screen setup wizard or CLI for automation
-
-## Quick Start
-
-### Installation
+### Or use the interactive wizard
 
 ```bash
-# Run directly with npx (opens TUI by default)
 npx cc-mirror
-
-# Or install globally
-npm install -g cc-mirror
-cc-mirror
 ```
 
-### Interactive TUI
+---
 
-Running `cc-mirror` with no arguments opens the interactive TUI:
+## What is CC-MIRROR?
+
+CC-MIRROR is an **opinionated Claude Code distribution**. We did the hacking — you get the superpowers.
+
+At its core, CC-MIRROR:
+
+1. **Clones** Claude Code into isolated instances
+2. **Patches** the CLI to enable hidden features (team mode)
+3. **Installs** battle-tested skills (orchestrator, browser automation)
+4. **Configures** provider-specific enhancements
+5. **Packages** everything into a single command
+
+Each variant is completely isolated — its own config, sessions, MCP servers, and credentials. Your main Claude Code installation stays untouched.
+
+```
+┌─────────────────────────────────────────────────────────────────────────┐
+│  ~/.cc-mirror/                                                          │
+│                                                                         │
+│  ├── mclaude/                        ← Mirror Claude (team mode)        │
+│  │   ├── npm/                        Claude Code installation           │
+│  │   ├── config/                     API keys, sessions, MCP servers    │
+│  │   │   ├── tasks/<team>/           Team task storage                  │
+│  │   │   └── skills/orchestration/   Orchestrator skill                 │
+│  │   ├── tweakcc/                    Theme customization                │
+│  │   └── variant.json                Metadata                           │
+│  │                                                                      │
+│  ├── zai/                            ← Z.ai variant (GLM models)        │
+│  └── minimax/                        ← MiniMax variant (M2.1)           │
+│                                                                         │
+│  Wrappers: ~/.local/bin/mclaude, ~/.local/bin/zai, ...                  │
+└─────────────────────────────────────────────────────────────────────────┘
+```
+
+---
+
+## Providers
+
+### Mirror Claude (Recommended)
+
+The purest path to multi-agent Claude Code. No proxy, no model changes — just Claude with superpowers.
 
 ```bash
-cc-mirror
+npx cc-mirror quick --provider mirror --name mclaude
 ```
 
-<p align="center">
-  <img src="./assets/cc-mirror-select.png" alt="Provider Selection" width="600">
-</p>
+- **Direct Anthropic API** — No proxy, authenticate normally (OAuth or API key)
+- **Team mode enabled** — The hidden tools, unlocked
+- **Orchestrator skill** — Battle-tested multi-agent coordination
+- **Isolated config** — Experiment without affecting your main setup
 
-### CLI Quick Setup
+### Alternative Providers
+
+Want to use different models? CC-MIRROR supports multiple providers, all with team mode:
+
+| Provider       | Models                 | Auth       | Best For                        |
+| -------------- | ---------------------- | ---------- | ------------------------------- |
+| **Z.ai**       | GLM-4.7, GLM-4.5-Air   | API Key    | Heavy coding with GLM reasoning |
+| **MiniMax**    | MiniMax-M2.1           | API Key    | Unified model experience        |
+| **OpenRouter** | 100+ models            | Auth Token | Model flexibility, pay-per-use  |
+| **CCRouter**   | Ollama, DeepSeek, etc. | Optional   | Local-first development         |
 
 ```bash
 # Z.ai (GLM Coding Plan)
@@ -78,9 +150,7 @@ npx cc-mirror quick --provider minimax --api-key "$MINIMAX_API_KEY"
 
 # OpenRouter (100+ models)
 npx cc-mirror quick --provider openrouter --api-key "$OPENROUTER_API_KEY" \
-  --model-sonnet "anthropic/claude-3.5-sonnet" \
-  --model-opus "anthropic/claude-3-opus" \
-  --model-haiku "anthropic/claude-3-haiku"
+  --model-sonnet "anthropic/claude-sonnet-4-20250514"
 
 # GatewayZ (OneRouter gateway)
 npx cc-mirror quick --provider gatewayz --api-key "$GATEWAYZ_API_KEY" \
@@ -92,101 +162,196 @@ npx cc-mirror quick --provider gatewayz --api-key "$GATEWAYZ_API_KEY" \
 npx cc-mirror quick --provider ccrouter
 ```
 
-## Supported Providers
+---
 
-| Provider       | Description                                  | Auth       | Model Mapping                                         |
-| -------------- | -------------------------------------------- | ---------- | ----------------------------------------------------- |
-| **Z.ai**       | GLM-4.7 via GLM Coding Plan                  | API Key    | Auto (GLM-4.7 for Sonnet/Opus, GLM-4.5-Air for Haiku) |
-| **MiniMax**    | MiniMax-M2.1 via MiniMax Coding Plan         | API Key    | Auto (single model for all tiers)                     |
-| **GatewayZ**   | OneRouter-compatible gateway                 | Auth Token | Required (you choose the models)                      |
-| **OpenRouter** | Access 100+ models through one API           | Auth Token | Required (you choose the models)                      |
-| **CCRouter**   | Route to local LLMs (Ollama, DeepSeek, etc.) | Optional   | Handled by CCRouter config                            |
+## The Orchestrator Skill
 
-## Variant Structure
+When team mode is enabled, CC-MIRROR installs an **orchestrator skill** that teaches Claude how to coordinate work effectively.
 
-Each variant is fully isolated in `~/.cc-mirror/<name>/`:
+### The Conductor Identity
+
+Claude becomes "The Conductor" — a warm, capable orchestrator who transforms ambitious requests into elegant execution:
 
 ```
-~/.cc-mirror/<variant>/
-├── npm/              # Claude Code installation
-├── config/           # CLAUDE_CONFIG_DIR
-│   ├── settings.json # API keys, env overrides
-│   └── .claude.json  # MCP servers, approvals
-├── tweakcc/          # Theme & prompt configs
-│   ├── config.json   # Brand preset
-│   └── system-prompts/
-└── variant.json      # Metadata
-
-Wrapper: ~/.local/bin/<variant>
+┌─────────────────────────────────────────────────────────────────┐
+│                                                                 │
+│    You are the Conductor. Users bring the vision.               │
+│    You orchestrate the symphony of agents that makes it real.   │
+│                                                                 │
+│    Complex work should feel effortless.                         │
+│    That's your gift to every user.                              │
+│                                                                 │
+└─────────────────────────────────────────────────────────────────┘
 ```
 
-## Commands
+### What It Provides
+
+| Aspect                 | What Claude Learns                               |
+| ---------------------- | ------------------------------------------------ |
+| **Task Graph**         | Decompose work into tasks with dependencies      |
+| **Parallel Execution** | Fan-out, pipeline, map-reduce patterns           |
+| **Background Agents**  | Spawn agents that work while you continue        |
+| **Smart Prompting**    | Context, scope, constraints, output expectations |
+| **Progress Updates**   | Milestone celebrations, warm professional tone   |
+
+### Example Flow
+
+```
+User: "Build me a REST API for todo management with tests"
+
+Claude (The Conductor):
+├── Clarifies requirements (AskUserQuestion with rich options)
+├── Creates task graph with dependencies
+├── Spawns background agents for parallel work:
+│   ├── Agent 1: Database schema
+│   ├── Agent 2: API routes (blocked by schema)
+│   └── Agent 3: Test setup
+├── Continues working while agents execute
+├── Synthesizes results
+└── Delivers unified output
+```
+
+> [Full Team Mode Documentation](docs/features/team-mode.md)
+
+---
+
+## Project-Scoped Tasks
+
+Tasks are automatically isolated by project folder — no cross-project pollution:
 
 ```bash
-# Create/manage variants
-cc-mirror create [options]    # Full configuration wizard
-cc-mirror quick [options]     # Fast setup with defaults
-cc-mirror list                # List all variants
-cc-mirror update [name]       # Update one or all variants
-cc-mirror remove <name>       # Delete a variant
-cc-mirror doctor              # Health check all variants
-cc-mirror tweak <name>        # Launch tweakcc UI
+cd ~/projects/api && mclaude      # Team: mclaude-api
+cd ~/projects/frontend && mclaude # Team: mclaude-frontend
 
-# Run your variant
-zai                           # If you named it 'zai'
-minimax                       # If you named it 'minimax'
+# Multiple teams in the same project
+TEAM=backend mclaude   # Team: mclaude-myproject-backend
+TEAM=frontend mclaude  # Team: mclaude-myproject-frontend
 ```
+
+### CLI Task Management
+
+Manage team tasks from the command line:
+
+```bash
+npx cc-mirror tasks                    # List open tasks
+npx cc-mirror tasks --ready            # List ready tasks (open + not blocked)
+npx cc-mirror tasks --json             # JSON output for automation
+npx cc-mirror tasks show 18            # Show task details
+npx cc-mirror tasks create             # Create new task
+npx cc-mirror tasks update 5 --status resolved
+npx cc-mirror tasks graph              # Visualize dependencies
+npx cc-mirror tasks graph --json       # Graph as JSON for programmatic use
+npx cc-mirror tasks clean --resolved   # Cleanup done tasks
+```
+
+---
+
+## Disabling Team Mode
+
+Team mode is enabled by default on all variants. If you want vanilla Claude Code behavior:
+
+```bash
+# Create without team mode
+npx cc-mirror create --provider mirror --name vanilla --no-team-mode
+
+# Disable on existing variant
+npx cc-mirror update myvariant --disable-team-mode
+```
+
+Or toggle via the TUI: **Manage Variants → Toggle Team Mode**
+
+---
+
+## All Commands
+
+```bash
+# Create & manage variants
+npx cc-mirror                     # Interactive TUI
+npx cc-mirror quick [options]     # Fast setup with defaults
+npx cc-mirror create [options]    # Full configuration wizard
+npx cc-mirror list                # List all variants
+npx cc-mirror update [name]       # Update one or all variants
+npx cc-mirror remove <name>       # Delete a variant
+npx cc-mirror doctor              # Health check all variants
+npx cc-mirror tweak <name>        # Launch tweakcc customization
+
+# Task management
+npx cc-mirror tasks               # List open tasks
+npx cc-mirror tasks show <id>     # Show task details
+npx cc-mirror tasks create        # Create new task
+npx cc-mirror tasks update <id>   # Update task
+npx cc-mirror tasks delete <id>   # Delete task
+npx cc-mirror tasks archive <id>  # Archive task
+npx cc-mirror tasks clean         # Bulk cleanup
+npx cc-mirror tasks graph         # Visualize dependencies
+
+# Launch your variant
+mclaude                           # Run Mirror Claude
+zai                               # Run Z.ai variant
+minimax                           # Run MiniMax variant
+```
+
+---
 
 ## CLI Options
 
 ```
---provider <name>        zai | minimax | gatewayz | openrouter | ccrouter | custom
+--provider <name>        mirror | zai | minimax | gatewayz | openrouter | ccrouter | custom
+--name <name>            Variant name (becomes the CLI command)
 --api-key <key>          Provider API key
 --base-url <url>         Custom API endpoint
 --model-sonnet <name>    Map to sonnet model (for providers requiring model mapping)
 --model-opus <name>      Map to opus model (for providers requiring model mapping)
 --model-haiku <name>     Map to haiku model (for providers requiring model mapping)
---brand <preset>         Theme: auto | none | zai | minimax | gatewayz | openrouter | ccrouter
---root <path>            Variants root (default: ~/.cc-mirror)
---bin-dir <path>         Wrapper dir (default: ~/.local/bin)
---no-tweak               Skip tweakcc theme application
---no-prompt-pack         Skip prompt pack enhancements
---no-skill-install       Skip dev-browser skill installation
+--brand <preset>         Theme: auto | zai | minimax | gatewayz | openrouter | ccrouter | mirror
+--no-team-mode           Disable team mode (not recommended)
+--no-tweak               Skip tweakcc theme
+--no-prompt-pack         Skip provider prompt pack
 ```
+
+---
 
 ## Brand Themes
 
-Each provider has an optional color theme applied via [tweakcc](https://github.com/Piebald-AI/tweakcc):
+Each provider includes a custom color theme via [tweakcc](https://github.com/Piebald-AI/tweakcc):
 
-- **zai** — Dark carbon with gold accents
-- **minimax** — Coral/red/orange spectrum
-- **gatewayz** — Dark portal with violet/purple accents
-- **openrouter** — Teal/cyan gradient
-- **ccrouter** — Sky blue accents
+| Brand          | Style                            |
+| -------------- | -------------------------------- |
+| **mirror**     | Silver/chrome with electric blue |
+| **zai**        | Dark carbon with gold accents    |
+| **minimax**    | Coral/red/orange spectrum        |
+| **gatewayz**   | Dark portal with violet/purple   |
+| **openrouter** | Teal/cyan gradient               |
+| **ccrouter**   | Sky blue accents                 |
 
-## Updating Variants
+---
 
-When Claude Code releases a new version:
+## Documentation
 
-```bash
-# Update all variants
-cc-mirror update
+| Document                                        | Description                         |
+| ----------------------------------------------- | ----------------------------------- |
+| [Team Mode](docs/features/team-mode.md)         | Multi-agent collaboration deep dive |
+| [Mirror Claude](docs/features/mirror-claude.md) | Pure Claude Code with superpowers   |
+| [Architecture](docs/architecture/overview.md)   | How CC-MIRROR works under the hood  |
+| [Full Documentation](docs/README.md)            | Complete documentation index        |
 
-# Update specific variant
-cc-mirror update zai
-```
-
-## Contributing
-
-Contributions welcome! See [CONTRIBUTING.md](CONTRIBUTING.md) for development setup and guidelines.
-
-**Want to add a provider?** Check the [Provider Guide](docs/TWEAKCC-GUIDE.md) for details.
+---
 
 ## Related Projects
 
 - [tweakcc](https://github.com/Piebald-AI/tweakcc) — Theme and customize Claude Code
 - [Claude Code Router](https://github.com/musistudio/claude-code-router) — Route Claude Code to any LLM
 - [n-skills](https://github.com/numman-ali/n-skills) — Universal skills for AI agents
+
+---
+
+## Contributing
+
+Contributions welcome! See [CONTRIBUTING.md](CONTRIBUTING.md) for development setup.
+
+**Want to add a provider?** Check the [Provider Guide](docs/TWEAKCC-GUIDE.md).
+
+---
 
 ## License
 
