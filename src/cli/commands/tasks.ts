@@ -257,6 +257,15 @@ export async function runTasksCommand({ opts }: TasksCommandOptions): Promise<vo
     case 'list':
     case undefined: {
       // Default operation is list
+      let limit = 50;
+      if (opts.limit !== undefined) {
+        limit = Number(opts.limit);
+        if (Number.isNaN(limit) || limit < 1 || !Number.isInteger(limit)) {
+          console.error('Error: --limit must be a positive integer.');
+          process.exitCode = 1;
+          return;
+        }
+      }
       runTasksList({
         rootDir,
         variant,
@@ -268,7 +277,7 @@ export async function runTasksCommand({ opts }: TasksCommandOptions): Promise<vo
         blocking: opts.blocking !== undefined ? Boolean(opts.blocking) : undefined,
         ready: opts.ready !== undefined ? Boolean(opts.ready) : undefined,
         owner: opts.owner as string | undefined,
-        limit: opts.limit !== undefined ? Number(opts.limit) : 50,
+        limit,
         json,
       });
       break;
